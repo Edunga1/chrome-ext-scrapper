@@ -1,0 +1,16 @@
+.saved {
+    max-width: 200px;
+}
+
+.saved .summary {
+    font-size: 2em;
+    font-weight: 900;
+}
+
+.saved .tab-tit {
+    font-weight: 900;
+}
+
+.saved .tab-url {
+    font-size: .5em;
+}
