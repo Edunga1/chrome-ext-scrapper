@@ -1,10 +1,21 @@
-.saved {
+.contents {
     max-width: 200px;
+    width: 200px;
 }
 
-.saved .summary {
+.summary {
     font-size: 2em;
     font-weight: 900;
+}
+
+.saved,
+.unsaved {
+    display: none;
+}
+
+.saved.active,
+.unsaved.active {
+    display: block;
 }
 
 .saved .tab-tit {

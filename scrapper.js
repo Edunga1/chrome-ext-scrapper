@@ -36,7 +36,7 @@ var scrapper = (function (storage, JSON) {
         });
 
         return res;
-    }
+    };
 
     /**
      * Sync with storage
@@ -47,8 +47,8 @@ var scrapper = (function (storage, JSON) {
 
     /**
      * Create new scrap to storage
-     * @param {string} url 스크랩 주소
-     * @param {string} title 스크랩 제목
+     * @param {string} url scrap url
+     * @param {string} title scrap title
      */
     var _newScrap = function (url, title) {
         var scrap = {};
