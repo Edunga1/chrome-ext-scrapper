@@ -1,5 +1,6 @@
 chrome.runtime.onMessage.addListener(function (req, sender) {
     var page = req.source;
+
     if (!page) {
         return;
     }

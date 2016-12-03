@@ -2,58 +2,90 @@ var scrapper = (function (storage, JSON) {
 
     //- constraints
 
-    // 저장소 URL 키 접두사
-    var _STORAGE_URL_PREFIX = '@';
-    // 저장소 스크랩 키 타이틀
+    // Scrap list key name in storage
+    var _STORAGE_SCRAPS = 'scraps';
+
+    // Scrap URL Key name in scrap list
+    var _STORAGE_SCRAP_URL = 'url';
+
+    // Scrap title key name in scrap list
     var _STORAGE_SCRAP_TITLE = 'title';
 
     //- privates
 
     /**
-     * 저장소에 스크랩 정보 JSON 저장
-     * @param {string} url 주소
-     * @param {string} property 스크랩 속성
-     * @param {string} value 값
+     * Scrap list
+     * @type {Array<Object>}
      */
-    var _setScrap = function (url, property, value) {
-        var storageKey = _STORAGE_URL_PREFIX + url;
-        var data;
+    var _scraps = (function () {
+        var listJSON = storage.getItem(_STORAGE_SCRAPS);
+        return listJSON ? JSON.parse(listJSON) : [];
+    })();
 
-        if (!storage || !JSON) {
+    /**
+     * @return {boolean} Scrap exists in storage
+     */
+    var _isDuplicate = function (url) {
+        var res = false;
+
+        _scraps.find(function (scrap) {
+            if (scrap.url == url) {
+                res = true;
+                return true; // break traverse
+            }
+        });
+
+        return res;
+    }
+
+    /**
+     * Sync with storage
+     */
+    var _sync = function () {
+        storage.setItem(_STORAGE_SCRAPS, JSON.stringify(_scraps));
+    };
+
+    /**
+     * Create new scrap to storage
+     * @param {string} url 스크랩 주소
+     * @param {string} title 스크랩 제목
+     */
+    var _newScrap = function (url, title) {
+        var scrap = {};
+
+        if (_isDuplicate(url)) {
             return false;
         }
 
-        data = storage.getItem(storageKey);
-        if (!data) {
-            data = {};
-        } else {
-            data = JSON.parse(data);
-        }
-
-        data[property] = value;
-        storage.setItem(storageKey, JSON.stringify(data));
+        scrap[_STORAGE_SCRAP_URL] = url;
+        scrap[_STORAGE_SCRAP_TITLE] = title;
+        _scraps.push(scrap);
+        _sync();
 
         return true;
     };
 
     //- module implementation
-    var _Scrapper = function () {
-
-    };
+    var _Scrapper = function () {};
 
     /**
-     * 스크랩
-     * @param {string} url 주소
-     * @param {string} title 타이틀
-     * @return {boolean} 스크랩 성공 여부
+     * Scrap
+     * @param {string} url scrap url
+     * @param {string} title scrap title
+     * @return {boolean} success or fail
      */
     _Scrapper.prototype.scrap = function (url, title) {
-        if (!storage) {
+        if (!storage || !JSON) {
             return false;
         }
 
-        return _setScrap(url, _STORAGE_SCRAP_TITLE, title);
+        return _newScrap(url, title);
     };
+
+    /**
+     * @return {boolean} Scrap exists in storage
+     */
+    _Scrapper.prototype.isDuplicate = _isDuplicate;
 
     return new _Scrapper();
 })(localStorage, JSON);
