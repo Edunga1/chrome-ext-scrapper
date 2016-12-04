@@ -1,4 +1,5 @@
 chrome.runtime.onMessage.addListener(function (req, sender) {
+    var tagInput = document.getElementById('tag-input');
     var page = req.source;
 
     if (!page) {
@@ -17,9 +18,19 @@ chrome.runtime.onMessage.addListener(function (req, sender) {
         var elUnsavedContents = document.querySelector('#unsaved-contents');
         elUnsavedContents.setAttribute('class', 'active');
     }
+
+    // tag input key pressed
+    tagInput.onkeypress = function (e) {
+        var tag = e.srcElement.value;
+        if (e.keyCode == 13) {
+            scrapper.addTag(page.url, tag);
+        }
+    };
 });
 
 window.onload = function () {
+
+    // parsing page information on load
     chrome.tabs.executeScript(
         null,
         {file: 'parser.js'},

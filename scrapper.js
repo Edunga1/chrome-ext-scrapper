@@ -23,14 +23,14 @@ var scrapper = (function (storage, JSON) {
     })();
 
     /**
-     * @return {boolean} Scrap exists in storage
+     * @return {boolean} Index of scrap in list
      */
-    var _isDuplicate = function (url) {
-        var res = false;
+    var _getScrapIndex = function (url) {
+        var res = -1;
 
-        _scraps.find(function (scrap) {
+        _scraps.find(function (scrap, index) {
             if (scrap.url == url) {
-                res = true;
+                res = index;
                 return true; // break traverse
             }
         });
@@ -51,18 +51,15 @@ var scrapper = (function (storage, JSON) {
      * @param {string} title scrap title
      */
     var _newScrap = function (url, title) {
-        var scrap = {};
+        var scrapIndex = _getScrapIndex(url);
 
-        if (_isDuplicate(url)) {
-            return false;
+        if (scrapIndex == -1) {
+            scrapIndex = _scraps.length;
         }
 
-        scrap[_STORAGE_SCRAP_URL] = url;
-        scrap[_STORAGE_SCRAP_TITLE] = title;
-        _scraps.push(scrap);
+        _scraps[scrapIndex][_STORAGE_SCRAP_URL] = url;
+        _scraps[scrapIndex][_STORAGE_SCRAP_TITLE] = title;
         _sync();
-
-        return true;
     };
 
     //- module implementation
@@ -79,13 +76,42 @@ var scrapper = (function (storage, JSON) {
             return false;
         }
 
-        return _newScrap(url, title);
+        _newScrap(url, title);
+
+        return this;
     };
 
     /**
      * @return {boolean} Scrap exists in storage
      */
-    _Scrapper.prototype.isDuplicate = _isDuplicate;
+    _Scrapper.prototype.isDuplicate = function () {
+        return _isDuplicate() != -1;
+    };
+
+    /**
+     * Attach tag to the scrap
+     * @param {string} url scrap url
+     * @param {string} tag tag
+     */
+    _Scrapper.prototype.addTag = function (url, tag) {
+        var index = _getScrapIndex(url);
+
+        if (index != -1 && tag.trim().length > 0) {
+            scrap = _scraps[index];
+
+            if (!scrap.tags) {
+                scrap.tags = [];
+            }
+
+            if (scrap.tags.indexOf(tag) == -1) {
+                scrap.tags.push(tag);
+                _sync();
+            }
+
+        }
+
+        return this;
+    };
 
     return new _Scrapper();
 })(localStorage, JSON);
