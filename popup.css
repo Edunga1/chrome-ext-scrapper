@@ -3,25 +3,22 @@
     width: 200px;
 }
 
-.summary {
+.box-summary {
     font-size: 2em;
     font-weight: 900;
 }
 
-.saved,
-.unsaved {
+.box-summary .txt {
     display: none;
 }
-
-.saved.active,
-.unsaved.active {
+.box-summary .txt.active {
     display: block;
 }
 
-.saved .tab-tit {
+.box-page-info .tab-tit {
     font-weight: 900;
 }
 
-.saved .tab-url {
+.box-page-info .tab-url {
     font-size: .5em;
 }
