@@ -1,3 +1,8 @@
+/**
+ * @typedef PageStorage
+ * @property {function(string, any):number} save
+ * @property {function(string):any} load
+ */
 var app = (function () {
     'use strict';
 

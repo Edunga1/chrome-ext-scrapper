@@ -1,0 +1,3 @@
+interface Bookmark {
+  url: string;
+}

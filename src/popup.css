@@ -22,3 +22,8 @@
 .box-page-info .tab-url {
     font-size: .5em;
 }
+
+.box-page-info .tab-tags {
+    max-height: 15em;
+    overflow-y: scroll;
+}

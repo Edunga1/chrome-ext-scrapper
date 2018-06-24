@@ -1,0 +1,32 @@
+{
+  "name": "chrome-ext-scrapper",
+  "version": "1.0.0",
+  "description": "",
+  "main": "parser.js",
+  "scripts": {
+    "build": "parcel ./src/index.html",
+    "test": "jest --watch",
+    "coverage": "jest --coverage"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Edunga1/chrome-ext-scrapper.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/Edunga1/chrome-ext-scrapper/issues"
+  },
+  "homepage": "https://github.com/Edunga1/chrome-ext-scrapper#readme",
+  "devDependencies": {
+    "babel-jest": "^23.0.1",
+    "eslint": "^4.19.1",
+    "eslint-config-airbnb-base": "^12.1.0",
+    "eslint-plugin-import": "^2.12.0",
+    "eslint-plugin-jest": "^21.17.0",
+    "jest": "^23.1.0",
+    "parcel-bundler": "^1.9.0",
+    "puppeteer": "^1.5.0"
+  }
+}
